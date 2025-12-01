@@ -1,0 +1,30 @@
+{
+  "name": "mdnote-taking",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EJ2KDJ/MDNote-taking.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EJ2KDJ/MDNote-taking/issues"
+  },
+  "homepage": "https://github.com/EJ2KDJ/MDNote-taking#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "fs": "^0.0.1-security",
+    "marked": "^17.0.1",
+    "multer": "^2.0.2",
+    "nodemon": "^3.1.11",
+    "path": "^0.12.7",
+    "uuid": "^13.0.0"
+  }
+}
