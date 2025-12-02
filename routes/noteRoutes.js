@@ -10,6 +10,6 @@ router.post("/", noteController.createNote);
 router.post("/render", noteController.renderNote);
 
 // Check grammer of notes
-router.post("/check-grammer", noteController.checkGrammer);
+router.post("/:id/grammar", noteController.checkGrammar);
 
 export default router;

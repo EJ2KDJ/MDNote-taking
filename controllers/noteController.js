@@ -59,13 +59,17 @@ const renderNote = async (req, res) => {
 }
 
 // Check grammer of note content
-const checkGrammer = async (req, res) => {
+const checkGrammar = async (req, res) => {
     try {
-        const { content } = req.body; // get note content from request body
+        const { id } = req.params; // get note ID from request parameters
 
-        if (!content) {
-            return res.status(400).json({ message: "Note content is required" });
+        const filePath = path.join('uploads', `${id}.md`); // construct file path
+
+        if (!fs.existsSync(filePath)) { // check if file exists
+            return res.status(404).json({ message: "Note not found" });
         }
+
+        const text = fs.readFileSync(filePath, "utf-8"); // read file content
 
         const response = await fetch('https://api.languagetool.org/v2/check', { // Using LanguageTool API for grammar checking
             method: 'POST',
@@ -73,7 +77,7 @@ const checkGrammer = async (req, res) => {
                 'Content-Type': 'application/x-www-form-urlencoded' // API expects form-urlencoded data
             },
             body: new URLSearchParams({ // Constructing the body of the request. URLSearchParams helps format it correctly
-                text: content,
+                text: text,
                 language: 'en-US'
             })
         });
@@ -91,4 +95,4 @@ const checkGrammer = async (req, res) => {
     }
 }
 
-export default { createNote, renderNote, checkGrammer };
+export default { createNote, renderNote, checkGrammar };
