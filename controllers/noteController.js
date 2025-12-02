@@ -54,8 +54,41 @@ const renderNote = async (req, res) => {
         })
     } catch (err) {
         console.error("Error rendering note:", err);
-        res.status(500).json({ message: "Internal server error" }); 
+        res.status(500).json({ message: "Internal server error" });
     }
 }
 
-export default { createNote, renderNote };
+// Check grammer of note content
+const checkGrammer = async (req, res) => {
+    try {
+        const { content } = req.body; // get note content from request body
+
+        if (!content) {
+            return res.status(400).json({ message: "Note content is required" });
+        }
+
+        const response = await fetch('https://api.languagetool.org/v2/check', { // Using LanguageTool API for grammar checking
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded' // API expects form-urlencoded data
+            },
+            body: new URLSearchParams({ // Constructing the body of the request. URLSearchParams helps format it correctly
+                text: content,
+                language: 'en-US'
+            })
+        });
+
+        const data = await response.json(); // Parse the JSON response
+
+        res.status(200).json({ //return results to client
+            message: "Grammer check completed",
+            matches: data.matches
+        });
+
+    } catch (err) {
+        console.error("Error checking grammer:", err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+export default { createNote, renderNote, checkGrammer };
